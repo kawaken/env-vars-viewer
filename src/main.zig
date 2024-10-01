@@ -6,8 +6,10 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
+    const port = std.process.getEnvVarOwned(allocator, "PORT") catch "8080";
+    const port_num = try std.fmt.parseInt(u16, port, 10);
     var server = try httpz.Server().init(allocator, .{
-        .port = 8080,
+        .port = port_num,
     });
     defer server.deinit();
     defer server.stop();
@@ -15,6 +17,7 @@ pub fn main() !void {
     var router = server.router();
     router.get("/", index);
 
+    std.debug.print("http server listen: {d}\n", .{port_num});
     try server.listen();
 }
 
