@@ -10,6 +10,7 @@ pub fn main() !void {
     const port_num = try std.fmt.parseInt(u16, port, 10);
     var server = try httpz.Server().init(allocator, .{
         .port = port_num,
+        .address = "0.0.0.0",
     });
     defer server.deinit();
     defer server.stop();

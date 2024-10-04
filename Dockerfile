@@ -12,4 +12,5 @@ RUN zig build
 
 FROM scratch
 COPY --from=builder /env-vars-viewer/zig-out/bin/env-vars-viewer /
+EXPOSE 8080
 CMD [ "/env-vars-viewer" ]
