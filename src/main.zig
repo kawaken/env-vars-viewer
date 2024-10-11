@@ -1,6 +1,15 @@
 const std = @import("std");
 const httpz = @import("httpz");
 
+fn printEnv(comptile print_fn: fn(format: []const u8, args: anytype) Error!void, allocator: std.mem.Allocator) !void {
+    var env_map = try std.process.getEnvMap(allocator);
+    var env_iter = env_map.iterator();
+
+    while (env_iter.next()) |entry| {
+        try print_fn("{s}={s}\n", .{ entry.key_ptr.*, entry.value_ptr.* });
+    }
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
