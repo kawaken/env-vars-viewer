@@ -15,9 +15,6 @@ pub fn main() !void {
     defer server.deinit();
     defer server.stop();
 
-    var router = server.router();
-    router.get("/", index);
-
     // 環境変数を取得してログに出力
     var env_map = try std.process.getEnvMap(allocator);
     var env_iter = env_map.iterator();
@@ -26,6 +23,9 @@ pub fn main() !void {
     while (env_iter.next()) |entry| {
         std.debug.print("{s}={s}\n", .{ entry.key_ptr.*, entry.value_ptr.* });
     }
+
+    var router = server.router();
+    router.get("/", index);
 
     std.debug.print("http server listen: {d}\n", .{port_num});
     try server.listen();
