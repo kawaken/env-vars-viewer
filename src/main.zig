@@ -19,15 +19,16 @@ pub fn main() !void {
     var env_map = try std.process.getEnvMap(allocator);
     var env_iter = env_map.iterator();
 
-    std.debug.print("環境変数\n", .{});
+    var writer = std.io.getStdOut().writer();
+    try writer.print("環境変数\n", .{});
     while (env_iter.next()) |entry| {
-        std.debug.print("{s}={s}\n", .{ entry.key_ptr.*, entry.value_ptr.* });
+        try writer.print("{s}={s}\n", .{ entry.key_ptr.*, entry.value_ptr.* });
     }
 
     var router = server.router();
     router.get("/", index);
 
-    std.debug.print("http server listen: {d}\n", .{port_num});
+    try writer.print("http server listen: {d}\n", .{port_num});
     try server.listen();
 }
 
