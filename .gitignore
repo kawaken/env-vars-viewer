@@ -25,3 +25,4 @@ Thumbs.db
 go.work
 
 *.log
+env-vars-viewer
