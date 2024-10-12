@@ -1,29 +1,4 @@
 # Copy from gitignore
-# Zig build artifacts
-zig-cache/
-.zig-cache/
-zig-out/
-build/
-build-*/
-
-# Binary output
-*.exe
-*.pdb
-*.obj
-*.o
-
-# Library output
-*.a
-*.so
-*.dylib
-*.dll
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
 # Editor files
 .vscode/
 .idea/
@@ -39,16 +14,15 @@ build-*/
 ehthumbs.db
 Thumbs.db
 
-# Zig specific
-main
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
-# Dependency directories (if you're using a package manager)
-deps/
+*.test
 
-# Custom build output directory (if you use a different name)
-# out/
+go.work
 
-# Log files
 *.log
-
-# Any other project-specific files or directories you want to ignore
