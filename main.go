@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -24,6 +25,12 @@ func printEnvVars(w io.Writer, format string) {
 	for key, value := range envVars {
 		fmt.Fprintf(w, format, key, value)
 	}
+}
+
+func jsonHandler(w http.ResponseWriter, r *http.Request) {
+	// 環境変数をJSONとして出力する
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(envVars)
 }
 
 func htmlHandler(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +65,7 @@ func main() {
 
 	// ハンドラを設定する
 	http.HandleFunc("/", htmlHandler)
-
+	http.HandleFunc("/json", jsonHandler)
 	// 指定されたportでサーバーを起動する
 	http.ListenAndServe(":"+port, nil)
 
