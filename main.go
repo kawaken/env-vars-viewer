@@ -54,7 +54,7 @@ func main() {
 		// 環境変数を出力する
 		printEnvVars(w, "<tr><td>%s</td><td>%s</td></tr>\n")
 		// HTMLのフッターを出力する
-		fmt.Fprintf(w, "</table></body></html>\n")
+		io.WriteString(w, "</table></body></html>\n")
 	})
 
 	// 指定されたportでサーバーを起動する
