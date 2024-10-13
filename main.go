@@ -26,6 +26,26 @@ func printEnvVars(w io.Writer, format string) {
 	}
 }
 
+func htmlHandler(w http.ResponseWriter, r *http.Request) {
+	// 環境変数をHTMLとして出力する
+	w.Header().Set("Content-Type", "text/html")
+	// HTMLのヘッダーを出力する
+	io.WriteString(w,
+		`<html><head>
+<title>Environment Variables</title>
+<style>
+	table { width: 100%; border-collapse: collapse; border: 1px solid #ddd;}
+	th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+</style>
+</head>
+<body><h1>Environment Variables</h1><table>`,
+	)
+	// 環境変数を出力する
+	printEnvVars(w, "<tr><td>%s</td><td>%s</td></tr>\n")
+	// HTMLのフッターを出力する
+	io.WriteString(w, "</table></body></html>\n")
+}
+
 func main() {
 	// 起動したときに環境変数を出力する
 	printEnvVars(os.Stdout, "%s=%s\n")
@@ -37,25 +57,7 @@ func main() {
 	}
 
 	// ハンドラを設定する
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// 環境変数をHTMLとして出力する
-		w.Header().Set("Content-Type", "text/html")
-		// HTMLのヘッダーを出力する
-		io.WriteString(w,
-			`<html><head>
-	<title>Environment Variables</title>
-	<style>
-		table { width: 100%; border-collapse: collapse; border: 1px solid #ddd;}
-		th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
-	</style>
-</head>
-<body><h1>Environment Variables</h1><table>`,
-		)
-		// 環境変数を出力する
-		printEnvVars(w, "<tr><td>%s</td><td>%s</td></tr>\n")
-		// HTMLのフッターを出力する
-		io.WriteString(w, "</table></body></html>\n")
-	})
+	http.HandleFunc("/", htmlHandler)
 
 	// 指定されたportでサーバーを起動する
 	http.ListenAndServe(":"+port, nil)
